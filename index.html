@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#1f5cc8">
+<title>8時間45分 前・後</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2330;--sub:#667085;--before:#1f9d55;--after:#d9480f;--same:#1971c2;--line:#dde1e8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171d;--card:#1e232c;--text:#eef0f4;--sub:#98a2b3;--before:#4cc38a;--after:#ff8a5b;--same:#74b0ff;--line:#2e3542;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14171d;--card:#1e232c;--text:#eef0f4;--sub:#98a2b3;--before:#4cc38a;--after:#ff8a5b;--same:#74b0ff;--line:#2e3542;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;display:flex;justify-content:center;padding:20px}
+main{width:100%;max-width:420px}
+h1{font-size:20px;margin:8px 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px}
+label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
+input[type=time]{width:100%;font-size:32px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);font-family:inherit}
+button{margin-top:10px;width:100%;padding:12px;font-size:16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);cursor:pointer}
+.res{text-align:center;padding:20px 12px}.lab{font-size:14px;color:var(--sub)}
+.big{font-size:44px;font-weight:700;line-height:1.2;margin-top:4px}
+.day{font-size:14px;color:var(--sub);min-height:1.2em}#bef{color:var(--before)}#aft{color:var(--after)}
+.ref input{font-size:20px}
+</style>
+</head>
+<body>
+<main>
+<h1>⏰ 8時間45分 前・後</h1>
+<div class="card">
+<label for="t">時間を入れてください</label>
+<input type="time" id="t">
+</div>
+<div class="card res"><div class="lab">8時間45分前</div><div class="big" id="bef">--</div><div class="day" id="bd"></div></div>
+<div class="card res"><div class="lab">8時間45分後</div><div class="big" id="aft">--</div><div class="day" id="ad"></div></div>
+<div class="card ref">
+<label for="r">ずらす時間(時間:分。変更もできます)</label>
+<input type="time" id="r" value="08:45">
+</div>
+</main>
+<script>
+const t=document.getElementById('t'),r=document.getElementById('r'),bef=document.getElementById('bef'),aft=document.getElementById('aft'),bd=document.getElementById('bd'),ad=document.getElementById('ad');
+function mins(v){const p=v.split(':');return +p[0]*60+ +p[1];}
+function hm(x){x=((x%1440)+1440)%1440;return String(Math.floor(x/60)).padStart(2,'0')+':'+String(x%60).padStart(2,'0');}
+function day(x){return x<0?'前日':x>=1440?'翌日':'';}
+function calc(){
+  if(!t.value||!r.value){bef.textContent='--';aft.textContent='--';bd.textContent='';ad.textContent='';return;}
+  const b=mins(t.value),o=mins(r.value);
+  bef.textContent=hm(b-o);bd.textContent=day(b-o);
+  aft.textContent=hm(b+o);ad.textContent=day(b+o);
+}
+t.addEventListener('input',calc);r.addEventListener('input',calc);
+</script>
+</body>
+</html>
